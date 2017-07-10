@@ -15,6 +15,6 @@ Set a VM to hybrid use benefit
 
     Set-AzureRmVmLicenseType.PS1 -VmName testvm1 -LicenseType Hybrid -Force
 	
-et a VM to regular licensing
+Set a VM to regular licensing
 
     Set-AzureRmVmLicenseType.PS1 -VmName testvm1 -LicenseType Standard -Force
