@@ -70,6 +70,13 @@ switch ($LicenseType) {
     }
 }
 
+#Copy the VM config out to a file
+if (!(Test-Path ".\VM-Backups")) {
+    $Null = New-Item -Path ".\VM-Backups" -ItemType "Directory"
+}
+Export-Clixml -Path ".\VM-Backups\$($VM.Name).Original.xml" -InputObject $VM
+
+
 Write-Host "Changing License type on VM: " -NoNewLine
 Write-Host $VM.Name -Foregroundcolor Yellow
 Write-Host "New License Type: " -NoNewLine
