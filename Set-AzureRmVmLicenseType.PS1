@@ -76,7 +76,6 @@ if (!(Test-Path ".\VM-Backups")) {
 }
 Export-Clixml -Path ".\VM-Backups\$($VM.Name).Original.xml" -InputObject $VM
 
-
 Write-Host "Changing License type on VM: " -NoNewLine
 Write-Host $VM.Name -Foregroundcolor Yellow
 Write-Host "New License Type: " -NoNewLine
