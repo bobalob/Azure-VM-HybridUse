@@ -1,11 +1,10 @@
 # Azure Resource Manager Hybrid Use Scripts
 
-**Does not work with B-Series or Managed Disk VMs**
-
 Set of scripts to get and toggle Azure Hybrid Use Benefit / Standard licensing - http://blog.superautomation.co.uk/2017/07/convert-azure-windows-virtual-machine.html
 
 __WARNING__ - The Set-AzureRmVmLicenseType.PS1 script has to __destroy__ your existing VM and recreate a new VM based on the old machine spec. __DO NOT__ use this on a machine that you have not backed up. 
 
+Should now work with Managed Disk VMs.
 
 ## Instructions
 
