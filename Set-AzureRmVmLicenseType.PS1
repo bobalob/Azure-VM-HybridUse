@@ -42,7 +42,7 @@ Param (
     [Parameter(Mandatory=$true)]
     [String]$LicenseType
 )
-$VM = Get-AzureRmVM -WarningAction SilentlyContinue | ? {$_.Name -eq $VMName}
+$VM = Get-AzureRmVM -WarningAction SilentlyContinue | Where-Object {$_.Name -eq $VMName}
 
 ## Perform prerequesite checks
 if (!($VM) -or $VM.Count -gt 1) {
@@ -120,8 +120,14 @@ $diskName = $VM.StorageProfile.OsDisk.Name
 $osDiskCaching = $VM.StorageProfile.OsDisk.Caching
 
 #Set the OS disk to attach
-$NewVM = Set-AzureRmVMOSDisk -VM $NewVM -VhdUri $osDiskUri -name $DiskName `
-    -CreateOption attach -Windows -Caching $osDiskCaching 
+if ($VM.StorageProfile.OSDisk.ManagedDisk) {
+    $NewVM = Set-AzureRmVMOSDisk -VM $NewVM `
+        -ManagedDiskId $VM.StorageProfile.OSDisk.ManagedDisk.Id `
+        -CreateOption Attach -Windows -Caching $osDiskCaching
+} else {
+    $NewVM = Set-AzureRmVMOSDisk -VM $NewVM -VhdUri $osDiskUri -name $DiskName `
+        -CreateOption attach -Windows -Caching $osDiskCaching 
+}
 
 #Attach data Disks
 if ($VM.StorageProfile.DataDisks.count -gt 0) {
@@ -129,10 +135,18 @@ if ($VM.StorageProfile.DataDisks.count -gt 0) {
     $DataDisks = $VM.StorageProfile.DataDisks
     $NewVM.StorageProfile.DataDisks = $Null
     foreach ($DataDisk in $DataDisks) {
-        $NewVM = Add-AzureRmVMDataDisk -VM $NewVM -VhdUri $DataDisk.Vhd.Uri `
-            -Name $DataDisk.Name -CreateOption "Attach" `
-            -Caching $DataDisk.Caching -DiskSizeInGB $DataDisk.DiskSizeInGB `
-            -Lun $DataDisk.Lun
+        if ($DataDisk.ManagedDisk) {
+            $NewVM = Add-AzureRmVMDataDisk -VM $NewVM `
+                -ManagedDiskId $DataDisk.ManagedDisk.Id `
+                -Name $DataDisk.Name -CreateOption "Attach" `
+                -Caching $DataDisk.Caching -DiskSizeInGB $DataDisk.DiskSizeInGB `
+                -Lun $DataDisk.Lun
+        } else {
+            $NewVM = Add-AzureRmVMDataDisk -VM $NewVM -VhdUri $DataDisk.Vhd.Uri `
+                -Name $DataDisk.Name -CreateOption "Attach" `
+                -Caching $DataDisk.Caching -DiskSizeInGB $DataDisk.DiskSizeInGB `
+                -Lun $DataDisk.Lun
+        }
     }   
 }
 
