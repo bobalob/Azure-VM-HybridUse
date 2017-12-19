@@ -14,7 +14,7 @@ Log in to your Azure account and select a subscription. If you need the AzureRm 
 
     PS> Login-AzureRmAccount
     
-    PS> Select-AzureRmSubsciption -SubscriptionName MySubscription
+    PS> Select-AzureRmSubscriptionName -SubscriptionName MySubscription
 
 Get a list of VMs and their current license type - Windows\_Server is the hybrid use license type.
 
