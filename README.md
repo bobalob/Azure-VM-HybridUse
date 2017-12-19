@@ -10,7 +10,7 @@ Should now work with Managed Disk VMs.
 
 ## Instructions
 
-Log in to your Azure account and select a subscription
+Log in to your Azure account and select a subscription. If you need the AzureRm Cmdlets, run 'Install-Module AzureRm'
 
     PS> Login-AzureRmAccount
     
