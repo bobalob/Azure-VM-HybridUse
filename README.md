@@ -10,14 +10,20 @@ Should now work with Managed Disk VMs.
 
 ## Instructions
 
+Log in to your Azure account and select a subscription
+
+    PS> Login-AzureRmAccount
+    
+    PS> Select-AzureRmSubsciption -SubscriptionName MySubscription
+
 Get a list of VMs and their current license type - Windows\_Server is the hybrid use license type.
 
-    .\Get-AzureRmVmLicenseType.PS1
+    PS> .\Get-AzureRmVmLicenseType.PS1
 	
 Set a VM to hybrid use benefit
 
-    . .\Set-AzureRmVmLicenseType.PS1 -VmName testvm1 -LicenseType Hybrid -Force
+    PS> . .\Set-AzureRmVmLicenseType.PS1 -VmName testvm1 -LicenseType Hybrid -Force
 	
 Set a VM to regular licensing
 
-    . .\Set-AzureRmVmLicenseType.PS1 -VmName testvm1 -LicenseType Standard -Force
+    PS> . .\Set-AzureRmVmLicenseType.PS1 -VmName testvm1 -LicenseType Standard -Force
